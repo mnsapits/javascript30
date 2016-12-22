@@ -30,6 +30,10 @@ function lookUpCities(query, cities) {
   });
 }
 
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
 function displayMatches() {
   const query = this.value
   if (this.value === "") {return}
@@ -38,10 +42,11 @@ function displayMatches() {
     const regex = new RegExp(query, 'gi')
     const cityName = place.city.replace(regex, `<span class='hl'>${query}</span>`);
     const stateName = place.state.replace(regex, `<span class='hl'>${query}</span>`);
+    const population = numberWithCommas(place.population);
     return `
     <li>
       <span class="name">${cityName}, ${stateName}</span>
-      <span class="population">${place.population}</span>
+      <span class="population">${population}</span>
     </li>`
   }).join('');
 
@@ -50,7 +55,6 @@ function displayMatches() {
 
 const search = document.querySelector('.search');
 const list = document.querySelector('.suggestions');
-
 search.addEventListener('change', displayMatches);
 search.addEventListener('keyup', displayMatches);
 
